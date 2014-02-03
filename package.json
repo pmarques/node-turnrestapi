@@ -4,7 +4,7 @@
   "description": "NodeJS TURN RestAPI",
   "main": "index.js",
   "scripts": {
-    "test": ""
+    "test": "./node_modules/.bin/mocha -u tdd --require should test/test.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,8 @@
     "rest"
   ],
   "author": "Patrick F. Marques",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "~1.17.1"
+  }
 }
