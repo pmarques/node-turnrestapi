@@ -1,0 +1,20 @@
+{
+  "name": "node-turnapi",
+  "version": "0.0.1",
+  "description": "NodeJS TURN RestAPI",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pmarques/node-turnrestapi.git"
+  },
+  "keywords": [
+    "rfc5766-turn-server",
+    "turn",
+    "rest"
+  ],
+  "author": "Patrick F. Marques",
+  "license": "MIT"
+}
