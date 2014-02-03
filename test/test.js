@@ -12,4 +12,14 @@ suite('Gen keys', function() {
 
 		assert.equal( expected, result );
 	});
+
+	test('Generates password from Shared key', function() {
+		var expected = 'zvcg5DAEySWJqZGpfm+Ds9LKepM=';
+		var username = '1391454799:59488199',
+		    shared_key = 'mySecrete1'
+
+		var result = turnapi.genSharedKey( username, shared_key );
+
+		assert.equal( expected, result );
+	});
 });
