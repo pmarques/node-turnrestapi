@@ -30,7 +30,7 @@ function getTurn( username ) {
 	var hash = genSharedKey( username, csk );
 
 	/* Define expiration timestamp */
-	var timestamp = Date.now();
+	var timestamp = Math.floor( Date.now() / 1000 );
 	username = username ? username + SEP + timestamp : timestamp;
 
 	var result = {
