@@ -23,7 +23,28 @@ function genSharedKey( username, shared_key ) {
 	return hash;
 }
 
+var Store = require( './lib/redis' );
+var store = new Store();
+function getTurn( username ) {
+	var csk = store.getCurrentSharedKey();
+	var hash = genSharedKey( username, csk );
+
+	/* Define expiration timestamp */
+	var timestamp = Date.now();
+	username = username ? username + SEP + timestamp : timestamp;
+
+	var result = {
+		username : username,
+		password : hash,
+		ttl      : 86400,
+		uris     : [] //defaultConfs.turn_ips
+	};
+
+	return result;
+}
+
 module.exports = {
 	genLongTermKey : genLongTermKey,
 	genSharedKey : genSharedKey,
+	getTurn : getTurn,
 }

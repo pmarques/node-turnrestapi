@@ -23,3 +23,42 @@ suite('Gen keys', function() {
 		assert.equal( expected, result );
 	});
 });
+
+var RedisStore = require( '../lib/redis' );
+var redisStore = new RedisStore();
+
+suite('HTTP REST API', function() {
+	var _now;
+
+	before( function() {
+		/* Fake timestamp to test */
+		_now = Date.now;
+		Date.now = function() {
+			return 1391515300;
+		}
+	});
+
+	after( function() {
+		/* Remove fake timestamp from test */
+		Date.now = _now;
+		_now = undefined;
+	});
+
+	test('Generate answer', function() {
+		var username = '1391454799'
+
+		var shared_key = redisStore.getCurrentSharedKey();
+		var pass = turnapi.genSharedKey( username, shared_key );
+
+		var expected = {
+			username : '1391454799:1391515300',
+			password : pass,
+			ttl      : 86400,
+			uris     : []
+		}
+
+		var result = turnapi.getTurn( username );
+
+		assert.deepEqual( expected, result );
+	});
+});
