@@ -34,7 +34,7 @@ suite('HTTP REST API', function() {
 		/* Fake timestamp to test */
 		_now = Date.now;
 		Date.now = function() {
-			return 1391515300;
+			return 1391515300000;
 		}
 	});
 
