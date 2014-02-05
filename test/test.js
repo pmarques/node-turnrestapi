@@ -1,31 +1,17 @@
 var assert = require('assert'),
-	turnapi = require( '../index' );
+    redis = require( 'node-redis-mock' ),
+    TURN_REST_API = require( '../index' );
+    keys = require( '../lib/keys' );
 
-suite('Gen keys', function() {
-	test('Generate long-term credential mechanism key for a user', function() {
-		var expected = '7da2270ccfa49786e0115366d3a3d14d';
-		var username = 'gorst',
-		    realm = 'north.gov',
-		    pass = 'hero'
-
-		var result = turnapi.genLongTermKey( username, realm, pass );
-
-		assert.equal( expected, result );
-	});
-
-	test('Generates password from Shared key', function() {
-		var expected = 'zvcg5DAEySWJqZGpfm+Ds9LKepM=';
-		var username = '1391454799:59488199',
-		    shared_key = 'mySecrete1'
-
-		var result = turnapi.genSharedKey( username, shared_key );
-
-		assert.equal( expected, result );
-	});
-});
-
+var redisConn = redis.createClient();
 var RedisStore = require( '../lib/redis' );
-var redisStore = new RedisStore();
+var redisStore = new RedisStore({
+	redis : redisConn
+});
+var turnapi = new TURN_REST_API({
+	db : redisConn,
+	urls: []
+});
 
 suite('HTTP REST API', function() {
 	var _now;
@@ -48,7 +34,7 @@ suite('HTTP REST API', function() {
 		var username = '1391454799'
 
 		var shared_key = redisStore.getCurrentSharedKey();
-		var pass = turnapi.genSharedKey( username, shared_key );
+		var pass = keys.genSharedKey( username, shared_key );
 
 		var expected = {
 			username : '1391454799:1391515300',
