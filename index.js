@@ -1,3 +1,5 @@
+"use strict";
+
 var SEP = ':';
 
 var crypto = require('crypto');
