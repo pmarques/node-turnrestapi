@@ -16,11 +16,14 @@ var turnapi = new TURN_REST_API({
 suite('HTTP REST API', function() {
 	var _now;
 
+	var fakeTime = 1391515300000;
+	var fakeTimeStr = Math.floor( fakeTime / 1000 );
+
 	before( function() {
 		/* Fake timestamp to test */
 		_now = Date.now;
 		Date.now = function() {
-			return 1391515300000;
+			return fakeTime;
 		}
 	});
 
@@ -30,9 +33,11 @@ suite('HTTP REST API', function() {
 		_now = undefined;
 	});
 
+	var defaltTTL = 86400;
+
 	test('Generate answer with empty username', function() {
 		var username = ''
-		var expectedUsername = '1391515300';
+		var expectedUsername = (fakeTimeStr + defaltTTL) + '';
 
 		var shared_key = redisStore.getCurrentSharedKey();
 		var pass = keys.genSharedKey( expectedUsername, shared_key );
@@ -40,7 +45,7 @@ suite('HTTP REST API', function() {
 		var expected = {
 			username : expectedUsername,
 			password : pass,
-			ttl      : 86400,
+			ttl      : defaltTTL,
 			uris     : []
 		}
 
@@ -50,8 +55,9 @@ suite('HTTP REST API', function() {
 	});
 
 	test('Generate answer', function() {
-		var expectedUsername = '1391515300:1391454799';
+		/* ts = ts + ttl */
 		var username = '1391454799';
+		var expectedUsername = (fakeTimeStr + defaltTTL) + ':1391454799';
 
 		var shared_key = redisStore.getCurrentSharedKey();
 		var pass = keys.genSharedKey( expectedUsername, shared_key );
@@ -59,7 +65,7 @@ suite('HTTP REST API', function() {
 		var expected = {
 			username : expectedUsername,
 			password : pass,
-			ttl      : 86400,
+			ttl      : defaltTTL,
 			uris     : []
 		}
 

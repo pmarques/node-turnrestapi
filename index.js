@@ -19,7 +19,9 @@ function TURN_REST_API( conf ) {
 
 	function getTurn( username ) {
 		/* Define expiration timestamp */
-		var timestamp = Math.floor( Date.now() / 1000 ).toString();
+		var timestamp = Math.floor( Date.now() / 1000 );
+		timestamp = timestamp + ttl;
+		timestamp = timestamp.toString();
 		username = username ? timestamp + SEP + username : timestamp;
 
 		var csk = store.getCurrentSharedKey();
