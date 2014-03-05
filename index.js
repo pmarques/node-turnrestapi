@@ -15,8 +15,8 @@ function TURN_REST_API( conf ) {
 		var hash = keys.genSharedKey( username, csk );
 
 		/* Define expiration timestamp */
-		var timestamp = Math.floor( Date.now() / 1000 );
-		username = username ? username + SEP + timestamp : timestamp;
+		var timestamp = Math.floor( Date.now() / 1000 ).toString();
+		username = username ? timestamp + SEP + username : timestamp;
 
 		var result = {
 			username : username,

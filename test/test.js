@@ -30,14 +30,34 @@ suite('HTTP REST API', function() {
 		_now = undefined;
 	});
 
-	test('Generate answer', function() {
-		var username = '1391454799'
+	test('Generate answer with empty username', function() {
+		var username = ''
+		var expectedUsername = '1391515300';
 
 		var shared_key = redisStore.getCurrentSharedKey();
-		var pass = keys.genSharedKey( username, shared_key );
+		var pass = keys.genSharedKey( expectedUsername, shared_key );
 
 		var expected = {
-			username : '1391454799:1391515300',
+			username : expectedUsername,
+			password : pass,
+			ttl      : 86400,
+			uris     : []
+		}
+
+		var result = turnapi.getTurn( username );
+
+		assert.deepEqual( expected, result );
+	});
+
+	test('Generate answer', function() {
+		var expectedUsername = '1391515300:1391454799';
+		var username = '1391454799';
+
+		var shared_key = redisStore.getCurrentSharedKey();
+		var pass = keys.genSharedKey( expectedUsername, shared_key );
+
+		var expected = {
+			username : expectedUsername,
 			password : pass,
 			ttl      : 86400,
 			uris     : []
